@@ -1,8 +1,8 @@
-package com.example.interviewpractice;
+package com.example.interviewpractice.NewsPractical;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,7 +12,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.interviewpractice.databinding.ActivityMainBinding;
+import com.example.interviewpractice.APIClient;
+import com.example.interviewpractice.APIInterface;
+import com.example.interviewpractice.CategotyShow.CategoryAdapter;
+import com.example.interviewpractice.CategotyShow.CategoryModel;
+import com.example.interviewpractice.R;
 
 import java.util.ArrayList;
 
@@ -20,19 +24,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity {
 
-    MainActivity mContext = MainActivity.this;
-    ActivityMainBinding mBinding;
-    ProgressDialog dialog;
+    RecyclerView rvNews;
     APIInterface apiInterface;
-    CategoryAdapter adapter;
+    ProgressDialog dialog;
+    NewsActivity mContext = NewsActivity.this;
+    ArrayList<NewsModel.Article> newsList = new ArrayList<>();
+    NewsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(mContext, R.layout.activity_main);
+        setContentView(R.layout.activity_news);
 
+        rvNews = findViewById(R.id.rvNews);
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
         dialog = new ProgressDialog(mContext);
@@ -43,24 +49,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void getCategoryList() {
         dialog.show();
+//        String newsUrl = "https://newsapi.org/v2/everything?q=tesla&from=2022-02-28&sortBy=publishedAt&apiKey=" +
+//                "dc3c19ab68444bca815e555d99b3a57c";
+        String q = "tesla";  String from = "2022-02-28";  String sortBy = "publishedAt";
+        String apiKey = "dc3c19ab68444bca815e555d99b3a57c";
+
         if (isInternetAvailable()) {
-            Call<CategoryModel> call = apiInterface.getCategories();
-            call.enqueue(new Callback<CategoryModel>() {
+            Call<NewsModel> call = apiInterface.getNews(q, from, sortBy, apiKey);
+            call.enqueue(new Callback<NewsModel>() {
                 @Override
-                public void onResponse(Call<CategoryModel> call, Response<CategoryModel> response) {
+                public void onResponse(Call<NewsModel> call, Response<NewsModel> response) {
                     if (response.code() == 200) {
                         if (response.body() != null) {
                             Log.d("RESPONSE", response.body().toString());
                             dialog.dismiss();
-                            CategoryModel model = response.body();
-                            int status = model.status;
-                            boolean success = model.success;
-                            ArrayList<CategoryModel.Data> dataList = model.data;
-                            Log.d("DATALIST", dataList.toString());
+                            int totalResults = response.body().totalResults;
+                            newsList = response.body().articles;
+//                            for(int i=0;i<newsList.size();i++) {
+//                                Log.d("TITLE", newsList.get(i).title);
+//                            }
 
-                            adapter = new CategoryAdapter(dataList, mContext);
-                            mBinding.rvCategory.setLayoutManager(new GridLayoutManager(mContext, 2));
-                            mBinding.rvCategory.setAdapter(adapter);
+                            adapter = new NewsAdapter(newsList, mContext, totalResults);
+                            rvNews.setLayoutManager(new GridLayoutManager(mContext, 1));
+                            rvNews.setAdapter(adapter);
                         }
                     } else {
                         dialog.dismiss();
@@ -69,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<CategoryModel> call, Throwable t) {
+                public void onFailure(Call<NewsModel> call, Throwable t) {
                     dialog.dismiss();
                     Log.d("ERROR", t.getMessage());
                     Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_LONG).show();

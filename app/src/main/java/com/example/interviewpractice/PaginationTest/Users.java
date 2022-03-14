@@ -1,4 +1,4 @@
-package com.example.interviewpractice;
+package com.example.interviewpractice.PaginationTest;
 
 import com.google.gson.annotations.SerializedName;
 

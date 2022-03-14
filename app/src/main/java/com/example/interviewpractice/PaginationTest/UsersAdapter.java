@@ -1,4 +1,4 @@
-package com.example.interviewpractice;
+package com.example.interviewpractice.PaginationTest;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.interviewpractice.R;
 import com.example.interviewpractice.databinding.RowUserdataBinding;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ItemViewHold
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.row_userdata, parent, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_userdata, parent, false);
         return new ItemViewHolder(binding.getRoot(), binding);
     }
 

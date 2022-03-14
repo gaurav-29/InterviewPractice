@@ -1,4 +1,4 @@
-package com.example.interviewpractice;
+package com.example.interviewpractice.PaginationTest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
+import com.example.interviewpractice.APIClient;
+import com.example.interviewpractice.APIInterface;
+import com.example.interviewpractice.R;
 import com.example.interviewpractice.databinding.ActivityPaginationTestBinding;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.interviewpractice;
+package com.example.interviewpractice.CategotyShow;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.interviewpractice.R;
 import com.example.interviewpractice.databinding.RowCategoryBinding;
 
 import java.util.ArrayList;
