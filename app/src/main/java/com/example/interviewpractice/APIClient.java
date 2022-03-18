@@ -15,7 +15,8 @@ public class APIClient {
 
     private static Retrofit retrofit = null;
     public static Retrofit getClient() {
-        final String BASE_URL = "https://newsapi.org/v2/";
+        //final String BASE_URL = "https://newsapi.org/v2/";
+        final String BASE_URL = "https://www.atheal.in/";
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
